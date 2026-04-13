@@ -58,11 +58,25 @@ function Find-ISCC {
 $iscc = Find-ISCC
 
 if (-not $iscc) {
-    Write-Host "      Not found. Installing via winget..." -ForegroundColor Yellow
-    winget install -e --id JRSoftware.InnoSetup --silent --accept-package-agreements --accept-source-agreements
-    # refresh PATH so new installs are visible
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" +
-                [System.Environment]::GetEnvironmentVariable("Path","User")
+    Write-Host "      Not found. Downloading from jrsoftware.org..." -ForegroundColor Yellow
+
+    # winget may have registered a broken install — remove it first
+    $wgList = winget list --id JRSoftware.InnoSetup 2>$null
+    if ($wgList -match "InnoSetup") {
+        Write-Host "      Removing broken winget registration..." -ForegroundColor Yellow
+        winget uninstall --id JRSoftware.InnoSetup --silent 2>$null
+    }
+
+    # download the installer directly (jrsoftware.org always serves latest)
+    $innoTmp = "$env:TEMP\innosetup.exe"
+    Invoke-WebRequest -Uri "https://jrsoftware.org/download.php/is.exe" `
+                      -OutFile $innoTmp -UseBasicParsing
+    Write-Host "      Installing Inno Setup silently..." -ForegroundColor Yellow
+    Start-Process -FilePath $innoTmp `
+                  -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" `
+                  -Wait
+    Remove-Item $innoTmp -ErrorAction SilentlyContinue
+
     $iscc = Find-ISCC
 }
 
