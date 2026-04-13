@@ -24,7 +24,6 @@ SetupIconFile=
 Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern
-WizardResizable=no
 ; Require Windows 10+
 MinVersion=10.0
 
@@ -35,7 +34,7 @@ PrivilegesRequiredOverridesAllowed=dialog
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
-Name: "desktopicon"; Description: "Create a &Desktop shortcut"; GroupDescription: "Additional icons:"; Flags: checked
+Name: "desktopicon"; Description: "Create a &Desktop shortcut"; GroupDescription: "Additional icons:"
 
 [Files]
 ; Main application
@@ -87,6 +86,7 @@ var
   BlobDest     : String;
   ManSrc       : String;
   ManDest      : String;
+  ResultCode   : Integer;
 begin
   InstallerDir := ExtractFilePath(ExpandConstant('{srcexe}'));
   ModelSrc     := InstallerDir + 'ollama-models\';
@@ -111,7 +111,7 @@ begin
       if FindRec.Name <> '.' then
         if FindRec.Name <> '..' then
           if not FileExists(BlobDest + FindRec.Name) then
-            FileCopy(BlobSrc + FindRec.Name, BlobDest + FindRec.Name, False);
+            CopyFile(BlobSrc + FindRec.Name, BlobDest + FindRec.Name, False);
     until not FindNext(FindRec);
     FindClose(FindRec);
   end;
@@ -123,7 +123,7 @@ begin
   Exec(
     ExpandConstant('{sys}\xcopy.exe'),
     '/s /y /q "' + ManSrc + '*" "' + ManDest + '"',
-    '', SW_HIDE, ewWaitUntilTerminated, ManDest{ reuse var }
+    '', SW_HIDE, ewWaitUntilTerminated, ResultCode
   );
 end;
 
