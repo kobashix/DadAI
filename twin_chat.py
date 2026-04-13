@@ -16,13 +16,11 @@ OLLAMA_BASE = "http://localhost:11434"
 
 MODELS = {
     "Interviewer  (builds the twin)": "personal-interviewer",
-    "Twin  (my-twin)":                "my-twin",
     "Legacy  (full biography)":       "andrew-legacy",
 }
 
 MODELFILES = {
     "personal-interviewer": "Interviewer.Modelfile",
-    "my-twin":              "StrongTwin.Modelfile",
     "andrew-legacy":        "Legacy.Modelfile",
 }
 
