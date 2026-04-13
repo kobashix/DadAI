@@ -39,6 +39,7 @@ $FilesToCopy = @(
     "Interviewer.Modelfile",
     "MyIdentity.txt",
     "twin_chat.py",
+    "talk_to_dad.py",
     "CLAUDE.md",
     "backup.ps1",
     "setup.bat",

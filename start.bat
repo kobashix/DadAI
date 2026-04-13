@@ -9,4 +9,4 @@ if errorlevel 1 (
 )
 
 :: Launch the chat GUI
-python "%~dp0twin_chat.py"
+python "%~dp0talk_to_dad.py"

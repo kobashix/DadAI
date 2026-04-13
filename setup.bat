@@ -89,7 +89,7 @@ echo  Creating desktop shortcut...
 set SCRIPT_DIR=%~dp0
 set SHORTCUT=%USERPROFILE%\Desktop\Talk to Dad.lnk
 powershell -NoProfile -Command ^
-  "$ws = New-Object -ComObject WScript.Shell; $s = $ws.CreateShortcut('%SHORTCUT%'); $s.TargetPath = 'python'; $s.Arguments = '\"%SCRIPT_DIR%twin_chat.py\"'; $s.WorkingDirectory = '%SCRIPT_DIR%'; $s.IconLocation = 'shell32.dll,13'; $s.Description = 'Talk to Dad'; $s.Save()"
+  "$ws = New-Object -ComObject WScript.Shell; $s = $ws.CreateShortcut('%SHORTCUT%'); $s.TargetPath = 'python'; $s.Arguments = '\"%SCRIPT_DIR%talk_to_dad.py\"'; $s.WorkingDirectory = '%SCRIPT_DIR%'; $s.IconLocation = 'shell32.dll,13'; $s.Description = 'Talk to Dad'; $s.Save()"
 echo  Shortcut created on your Desktop: "Talk to Dad"
 
 echo.
