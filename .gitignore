@@ -9,6 +9,10 @@ build/
 dist/
 *.spec
 
+# Downloaded installers (too large, rebuilt by build_installer.ps1)
+OllamaSetup.exe
+Output/
+
 # AI team output
 ai team/final_output.txt
 
