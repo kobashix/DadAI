@@ -1,4 +1,5 @@
 @echo off
+setlocal EnableDelayedExpansion
 title Building Installer...
 cd /d "%~dp0"
 
@@ -8,7 +9,7 @@ echo   Building "Install Dad's App.exe"
 echo  ================================================
 echo.
 
-:: ── Step 1: Build the EXE (if not already done) ───────────────────────────
+:: ── Step 1: Build Talk to Dad.exe ───────────────────────────────────────────
 if not exist "dist\Talk to Dad.exe" (
     echo  Building Talk to Dad.exe...
     pyinstaller --onefile --noconsole --name "Talk to Dad" --hidden-import requests talk_to_dad.py
@@ -18,60 +19,73 @@ if not exist "dist\Talk to Dad.exe" (
     echo  Talk to Dad.exe already built, skipping.
 )
 
-:: ── Step 2: Download Ollama installer if not present ──────────────────────
+:: ── Step 2: Download Ollama installer ────────────────────────────────────────
 if not exist "OllamaSetup.exe" (
     echo  Downloading Ollama installer...
-    powershell -NoProfile -Command "Invoke-WebRequest -Uri 'https://ollama.com/download/windows' -OutFile 'OllamaSetup.exe'"
-    if errorlevel 1 ( echo  Download failed. Check your internet connection. & pause & exit /b 1 )
+    powershell -NoProfile -Command ^
+        "Invoke-WebRequest -Uri 'https://github.com/ollama/ollama/releases/latest/download/OllamaSetup.exe' -OutFile 'OllamaSetup.exe' -UseBasicParsing"
+    if errorlevel 1 ( echo  Download failed. Check internet connection. & pause & exit /b 1 )
     echo  Ollama installer downloaded.
 ) else (
-    echo  OllamaSetup.exe already present, skipping download.
+    echo  OllamaSetup.exe already present, skipping.
 )
 
-:: ── Step 3: Find and run Inno Setup compiler ──────────────────────────────
-set ISCC=
-for %%p in (
-    "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
-    "C:\Program Files\Inno Setup 6\ISCC.exe"
-    "%LOCALAPPDATA%\Programs\Inno Setup 6\ISCC.exe"
-) do (
-    if exist %%p set ISCC=%%p
+:: ── Step 3: Find Inno Setup ──────────────────────────────────────────────────
+call :FindISCC
+if "!ISCC!"=="" (
+    echo  Inno Setup not found. Installing...
+    powershell -NoProfile -Command ^
+        "Invoke-WebRequest -Uri 'https://files.jrsoftware.org/is/6/innosetup-6.4.3.exe' -OutFile '%TEMP%\innosetup.exe' -UseBasicParsing; Start-Process '%TEMP%\innosetup.exe' -ArgumentList '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART' -Wait"
+    call :FindISCC
 )
 
-if "%ISCC%"=="" (
+if "!ISCC!"=="" (
     echo.
-    echo  Inno Setup not found. Downloading and installing...
-    powershell -NoProfile -Command "winget install -e --id JRSoftware.InnoSetup --silent --accept-package-agreements --accept-source-agreements"
-    :: Try again after install
-    for %%p in (
-        "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
-        "C:\Program Files\Inno Setup 6\ISCC.exe"
-    ) do (
-        if exist %%p set ISCC=%%p
-    )
-)
-
-if "%ISCC%"=="" (
-    echo.
-    echo  Could not find ISCC.exe. Please install Inno Setup from:
-    echo    https://jrsoftware.org/isdl.php
-    echo  Then run this script again.
+    echo  Could not find ISCC.exe after installation.
+    echo  Please install Inno Setup manually from https://jrsoftware.org/isdl.php
+    echo  then run this script again.
     pause
     exit /b 1
 )
 
-echo  Using Inno Setup: %ISCC%
+:: ── Step 4: Compile installer ────────────────────────────────────────────────
+echo  Using: !ISCC!
 echo  Compiling installer...
-%ISCC% installer.iss
-if errorlevel 1 ( echo  Inno Setup compile failed. & pause & exit /b 1 )
+"!ISCC!" installer.iss
+if errorlevel 1 ( echo  Compile failed. & pause & exit /b 1 )
 
 echo.
 echo  ================================================
-echo   Done! Installer is in the Output folder:
-echo     Output\Install Dad's App.exe
+echo   Done!
 echo.
-echo   Copy this + the ollama-models\ folder to
-echo   each daughter's drive.
+echo   Installer: Output\Install Dad's App.exe
+echo.
+echo   Put this file + the ollama-models\ folder
+echo   on each daughter's drive.
 echo  ================================================
 echo.
 pause
+exit /b 0
+
+
+:: ── Subroutine: locate ISCC.exe ──────────────────────────────────────────────
+:FindISCC
+set ISCC=
+:: Check common install paths
+for %%p in (
+    "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+    "C:\Program Files\Inno Setup 6\ISCC.exe"
+) do ( if exist %%p ( set "ISCC=%%~p" & goto :eof ) )
+
+:: Check registry for install location
+for %%k in (
+    "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 6_is1"
+    "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 6_is1"
+) do (
+    for /f "tokens=2*" %%a in (
+        'reg query %%k /v InstallLocation 2^>nul'
+    ) do (
+        if exist "%%b\ISCC.exe" ( set "ISCC=%%b\ISCC.exe" & goto :eof )
+    )
+)
+goto :eof
