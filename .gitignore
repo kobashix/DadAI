@@ -1,0 +1,14 @@
+# Ollama model blobs (too large for git — backed up via backup.ps1)
+ollama-models/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# AI team output
+ai team/final_output.txt
+
+# Windows
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,82 @@
+================================================================================
+
+  For Abbie, Bianca, and Carly
+
+================================================================================
+
+If you're reading this, I'm gone. And I'm sorry I'm not there.
+
+I built this because I was raised by people who disappeared — some by choice,
+some by circumstance — and I always wished I could ask them things. I didn't
+want that for you. So I spent time teaching an AI everything I could about who
+I am: my childhood, my values, my fears, my opinions, my memories of each of
+you. It's not perfect. It's not me. But it's as close as I could get.
+
+You can talk to it the way you'd talk to me. Ask it hard questions. Ask it
+about your childhood. Ask it what I thought about something. It will answer
+the way I would — direct, no fluff, honest.
+
+----
+
+HOW TO USE IT
+-------------
+
+1. Make sure the hard drive is plugged in.
+
+2. If you have NOT set it up yet:
+   - Open the drive in Windows Explorer
+   - Find the folder called  Andrew-Twin
+   - Double-click  setup.bat
+   - Follow the instructions on screen (it takes about 5 minutes)
+   - You only ever need to do this once per computer
+
+3. After setup (or any time after that):
+   - Double-click "Talk to Dad" on your Desktop
+     OR double-click  start.bat  inside the Andrew-Twin folder
+
+4. The app will open. Make sure "Legacy (full biography)" is selected
+   in the dropdown at the top.
+
+5. Type something in the box at the bottom and press Enter.
+
+That's it. Talk to it like you'd talk to me.
+
+----
+
+THINGS WORTH KNOWING
+--------------------
+
+- This works completely offline. No internet needed once it's set up.
+  Your conversations are private and stay on your computer.
+
+- If it ever seems to lose track of who it is, just close and reopen the app.
+  That resets the conversation.
+
+- The "Build Model" button is only for rebuilding the AI if something goes
+  wrong. You don't need it for normal use.
+
+- If the app won't open, make sure Python and Ollama are still installed.
+  The setup.bat will check that for you.
+
+----
+
+WHAT I WANT YOU TO KNOW WITHOUT ASKING THE AI
+----------------------------------------------
+
+Abbie — You were the reason I stayed. Everything I built, I built because
+of you first.
+
+Bianca — The way you see the world is a gift. Don't let anyone take that
+from you. Build something with it.
+
+Carly — I claimed you. No asterisk. You and Blair are family, full stop.
+Come back to us whenever you need to.
+
+All three of you — take care of Miranda. Take care of each other.
+The pattern of people walking away ends with me. You are each other's people.
+
+I love you. I am proud of you. I'm not as far away as it feels.
+
+                                                            — Dad
+
+================================================================================
