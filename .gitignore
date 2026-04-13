@@ -1,10 +1,13 @@
 # Ollama model blobs (too large for git — backed up via backup.ps1)
 ollama-models/
 
-# Python
+# Python / PyInstaller
 __pycache__/
 *.pyc
 *.pyo
+build/
+dist/
+*.spec
 
 # AI team output
 ai team/final_output.txt
